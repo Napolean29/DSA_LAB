@@ -113,7 +113,9 @@ int main()
         {
             if (s1[i].roll == roll)
             {
-                printf("\nThe details of the student with entered roll number are as follows:\n");
+               printf("\nThe details of the student with entered roll number are as follows:\n");
+               printf("Name: %s\nRoll Number: %d\nBranch: %s\nCGPA: %.2f\n", s1[i].name, s1[i].roll, s1[i].branch, s1[i].cgpa);
+               
             }
         }
     }
@@ -225,8 +227,6 @@ int main()
 // integer x passed to it. Create an integer variable in main, print out its address, and then pass
 // that variable to print_addr. Compare the results. Is this expected behavior?
 // http://maciej.sobieraj.pracownik.put.poznan.pl/10_C.pdf
-
-
 //  Write a program in C to print the address of the variable.
 #include <stdio.h>
 int main()
@@ -622,8 +622,7 @@ void delete_node(struct node **start, int x)
       ptr1 = ptr1->next;
    }
 }
-// Given a reference (pointer to pointer) to the head of a list and an int,
-//  delete the node with that int.
+// Given a reference (pointer to pointer) to the head of a list and an int,delete the node with that int.
 void delete_node_reference(struct node **start, int x)
 {
    struct node *ptr1, *ptr2;
