@@ -1,3 +1,4 @@
+// https://www.programiz.com/dsa
 // Create a structure called Student that can hold the following details:
 // Name
 // Roll Number
@@ -115,7 +116,7 @@ int main()
             {
                printf("\nThe details of the student with entered roll number are as follows:\n");
                printf("Name: %s\nRoll Number: %d\nBranch: %s\nCGPA: %.2f\n", s1[i].name, s1[i].roll, s1[i].branch, s1[i].cgpa);
-               
+
             }
         }
     }
@@ -154,7 +155,12 @@ int main()
     printf("Sum of %d and %d is %d", a, b, sum);  
     return 0;  
 }
-// SOL 2
+int add(int x, int y)  
+{  
+    return x + y;  
+}
+// Write a program in C to add numbers using call by reference.
+// https://www.w3resource.com/c-programming-exercises/pointer/c-pointer-exercise-5.php
 #include <stdio.h>
 long addTwoNumbers(long *, long *);
  
@@ -1091,4 +1097,636 @@ int dequeue_queue_using_stack(struct node **front)
    *front = (*front)->next;
    free(temp);
    return x;
+}
+
+// Tree traversal in C
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+  int item;
+  struct node* left;
+  struct node* right;
+};
+
+// Inorder traversal
+void inorderTraversal(struct node* root) {
+  if (root == NULL) return;
+  inorderTraversal(root->left);
+  printf("%d ->", root->item);
+  inorderTraversal(root->right);
+}
+
+// Preorder traversal
+void preorderTraversal(struct node* root) {
+  if (root == NULL) return;
+  printf("%d ->", root->item);
+  preorderTraversal(root->left);
+  preorderTraversal(root->right);
+}
+
+// Postorder traversal
+void postorderTraversal(struct node* root) {
+  if (root == NULL) return;
+  postorderTraversal(root->left);
+  postorderTraversal(root->right);
+  printf("%d ->", root->item);
+}
+
+// Create a new Node
+struct node* createNode(value) {
+  struct node* newNode = malloc(sizeof(struct node));
+  newNode->item = value;
+  newNode->left = NULL;
+  newNode->right = NULL;
+
+  return newNode;
+}
+
+// Insert on the left of the node
+struct node* insertLeft(struct node* root, int value) {
+  root->left = createNode(value);
+  return root->left;
+}
+
+// Insert on the right of the node
+struct node* insertRight(struct node* root, int value) {
+  root->right = createNode(value);
+  return root->right;
+}
+
+int main() {
+  struct node* root = createNode(1);
+  insertLeft(root, 2);
+  insertRight(root, 3);
+  insertLeft(root->left, 4);
+
+  printf("Inorder traversal \n");
+  inorderTraversal(root);
+
+  printf("\nPreorder traversal \n");
+  preorderTraversal(root);
+
+  printf("\nPostorder traversal \n");
+  postorderTraversal(root);
+}
+
+// Checking if a binary tree is a full binary tree in C
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+  int item;
+  struct Node *left, *right;
+};
+
+// Creation of new Node
+struct Node *createNewNode(char k) {
+  struct Node *node = (struct Node *)malloc(sizeof(struct Node));
+  node->item = k;
+  node->right = node->left = NULL;
+  return node;
+}
+
+bool isFullBinaryTree(struct Node *root) {
+  // Checking tree emptiness
+  if (root == NULL)
+    return true;
+
+  // Checking the presence of children
+  if (root->left == NULL && root->right == NULL)
+    return true;
+
+  if ((root->left) && (root->right))
+    return (isFullBinaryTree(root->left) && isFullBinaryTree(root->right));
+
+  return false;
+}
+
+int main() {
+  struct Node *root = NULL;
+  root = createNewNode(1);
+  root->left = createNewNode(2);
+  root->right = createNewNode(3);
+
+  root->left->left = createNewNode(4);
+  root->left->right = createNewNode(5);
+  root->left->right->left = createNewNode(6);
+  root->left->right->right = createNewNode(7);
+
+  if (isFullBinaryTree(root))
+    printf("The tree is a full binary tree\n");
+  else
+    printf("The tree is not a full binary tree\n");
+}
+
+// Checking if a binary tree is a perfect binary tree in C
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+  int data;
+  struct node *left;
+  struct node *right;
+};
+
+// Creating a new node
+struct node *newnode(int data) {
+  struct node *node = (struct node *)malloc(sizeof(struct node));
+  node->data = data;
+  node->left = NULL;
+  node->right = NULL;
+
+  return (node);
+}
+
+// Calculate the depth
+int depth(struct node *node) {
+  int d = 0;
+  while (node != NULL) {
+    d++;
+    node = node->left;
+  }
+  return d;
+}
+
+// Check if the tree is perfect
+bool is_perfect(struct node *root, int d, int level) {
+    // Check if the tree is empty
+  if (root == NULL)
+    return true;
+
+  // Check the presence of children
+  if (root->left == NULL && root->right == NULL)
+    return (d == level + 1);
+
+  if (root->left == NULL || root->right == NULL)
+    return false;
+
+  return is_perfect(root->left, d, level + 1) &&
+       is_perfect(root->right, d, level + 1);
+}
+
+// Wrapper function
+bool is_Perfect(struct node *root) {
+  int d = depth(root);
+  return is_perfect(root, d, 0);
+}
+
+int main() {
+  struct node *root = NULL;
+  root = newnode(1);
+  root->left = newnode(2);
+  root->right = newnode(3);
+  root->left->left = newnode(4);
+  root->left->right = newnode(5);
+  root->right->left = newnode(6);
+
+  if (is_Perfect(root))
+    printf("The tree is a perfect binary tree\n");
+  else
+    printf("The tree is not a perfect binary tree\n");
+}
+
+// Checking if a binary tree is a complete binary tree in C
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+  int key;
+  struct Node *left, *right;
+};
+
+// Node creation
+struct Node *newNode(char k) {
+  struct Node *node = (struct Node *)malloc(sizeof(struct Node));
+  node->key = k;
+  node->right = node->left = NULL;
+  return node;
+}
+
+// Count the number of nodes
+int countNumNodes(struct Node *root) {
+  if (root == NULL)
+    return (0);
+  return (1 + countNumNodes(root->left) + countNumNodes(root->right));
+}
+
+// Check if the tree is a complete binary tree
+bool checkComplete(struct Node *root, int index, int numberNodes) {
+  // Check if the tree is complete
+  if (root == NULL)
+    return true;
+
+  if (index >= numberNodes)
+    return false;
+
+  return (checkComplete(root->left, 2 * index + 1, numberNodes) && checkComplete(root->right, 2 * index + 2, numberNodes));
+}
+
+int main() {
+  struct Node *root = NULL;
+  root = newNode(1);
+  root->left = newNode(2);
+  root->right = newNode(3);
+  root->left->left = newNode(4);
+  root->left->right = newNode(5);
+  root->right->left = newNode(6);
+
+  int node_count = countNumNodes(root);
+  int index = 0;
+
+  if (checkComplete(root, index, node_count))
+    printf("The tree is a complete binary tree\n");
+  else
+    printf("The tree is not a complete binary tree\n");
+}
+
+// Checking if a binary tree is height balanced in C
+
+#include <stdio.h>
+#include <stdlib.h>
+#define bool int
+
+// Node creation
+struct node {
+  int item;
+  struct node *left;
+  struct node *right;
+};
+
+// Create a new node
+struct node *newNode(int item) {
+  struct node *node = (struct node *)malloc(sizeof(struct node));
+  node->item = item;
+  node->left = NULL;
+  node->right = NULL;
+
+  return (node);
+}
+
+// Check for height balance
+bool checkHeightBalance(struct node *root, int *height) {
+  // Check for emptiness
+  int leftHeight = 0, rightHeight = 0;
+  int l = 0, r = 0;
+
+  if (root == NULL) {
+    *height = 0;
+    return 1;
+  }
+
+  l = checkHeightBalance(root->left, &leftHeight);
+  r = checkHeightBalance(root->right, &rightHeight);
+
+  *height = (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+
+  if ((leftHeight - rightHeight >= 2) || (rightHeight - leftHeight >= 2))
+    return 0;
+
+  else
+    return l && r;
+}
+
+int main() {
+  int height = 0;
+
+  struct node *root = newNode(1);
+  root->left = newNode(2);
+  root->right = newNode(3);
+  root->left->left = newNode(4);
+  root->left->right = newNode(5);
+
+  if (checkHeightBalance(root, &height))
+    printf("The tree is balanced");
+  else
+    printf("The tree is not balanced");
+}
+
+// Binary Search Tree operations in C
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+  int key;
+  struct node *left, *right;
+};
+
+// Create a node
+struct node *newNode(int item) {
+  struct node *temp = (struct node *)malloc(sizeof(struct node));
+  temp->key = item;
+  temp->left = temp->right = NULL;
+  return temp;
+}
+
+// Inorder Traversal
+void inorder(struct node *root) {
+  if (root != NULL) {
+    // Traverse left
+    inorder(root->left);
+
+    // Traverse root
+    printf("%d -> ", root->key);
+
+    // Traverse right
+    inorder(root->right);
+  }
+}
+
+// Insert a node
+struct node *insert(struct node *node, int key) {
+  // Return a new node if the tree is empty
+  if (node == NULL) return newNode(key);
+
+  // Traverse to the right place and insert the node
+  if (key < node->key)
+    node->left = insert(node->left, key);
+  else
+    node->right = insert(node->right, key);
+
+  return node;
+}
+
+// Find the inorder successor
+struct node *minValueNode(struct node *node) {
+  struct node *current = node;
+
+  // Find the leftmost leaf
+  while (current && current->left != NULL)
+    current = current->left;
+
+  return current;
+}
+
+// Deleting a node
+struct node *deleteNode(struct node *root, int key) {
+  // Return if the tree is empty
+  if (root == NULL) return root;
+
+  // Find the node to be deleted
+  if (key < root->key)
+    root->left = deleteNode(root->left, key);
+  else if (key > root->key)
+    root->right = deleteNode(root->right, key);
+
+  else {
+    // If the node is with only one child or no child
+    if (root->left == NULL) {
+      struct node *temp = root->right;
+      free(root);
+      return temp;
+    } else if (root->right == NULL) {
+      struct node *temp = root->left;
+      free(root);
+      return temp;
+    }
+
+    // If the node has two children
+    struct node *temp = minValueNode(root->right);
+
+    // Place the inorder successor in position of the node to be deleted
+    root->key = temp->key;
+
+    // Delete the inorder successor
+    root->right = deleteNode(root->right, temp->key);
+  }
+  return root;
+}
+
+// Driver code
+int main() {
+  struct node *root = NULL;
+  root = insert(root, 8);
+  root = insert(root, 3);
+  root = insert(root, 1);
+  root = insert(root, 6);
+  root = insert(root, 7);
+  root = insert(root, 10);
+  root = insert(root, 14);
+  root = insert(root, 4);
+
+  printf("Inorder traversal: ");
+  inorder(root);
+
+  printf("\nAfter deleting 10\n");
+  root = deleteNode(root, 10);
+  printf("Inorder traversal: ");
+  inorder(root);
+}
+
+// AVL tree implementation in C
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Create Node
+struct Node {
+  int key;
+  struct Node *left;
+  struct Node *right;
+  int height;
+};
+
+int max(int a, int b);
+
+// Calculate height
+int height(struct Node *N) {
+  if (N == NULL)
+    return 0;
+  return N->height;
+}
+
+int max(int a, int b) {
+  return (a > b) ? a : b;
+}
+
+// Create a node
+struct Node *newNode(int key) {
+  struct Node *node = (struct Node *)
+    malloc(sizeof(struct Node));
+  node->key = key;
+  node->left = NULL;
+  node->right = NULL;
+  node->height = 1;
+  return (node);
+}
+
+// Right rotate
+struct Node *rightRotate(struct Node *y) {
+  struct Node *x = y->left;
+  struct Node *T2 = x->right;
+
+  x->right = y;
+  y->left = T2;
+
+  y->height = max(height(y->left), height(y->right)) + 1;
+  x->height = max(height(x->left), height(x->right)) + 1;
+
+  return x;
+}
+
+// Left rotate
+struct Node *leftRotate(struct Node *x) {
+  struct Node *y = x->right;
+  struct Node *T2 = y->left;
+
+  y->left = x;
+  x->right = T2;
+
+  x->height = max(height(x->left), height(x->right)) + 1;
+  y->height = max(height(y->left), height(y->right)) + 1;
+
+  return y;
+}
+
+// Get the balance factor
+int getBalance(struct Node *N) {
+  if (N == NULL)
+    return 0;
+  return height(N->left) - height(N->right);
+}
+
+// Insert node
+struct Node *insertNode(struct Node *node, int key) {
+  // Find the correct position to insertNode the node and insertNode it
+  if (node == NULL)
+    return (newNode(key));
+
+  if (key < node->key)
+    node->left = insertNode(node->left, key);
+  else if (key > node->key)
+    node->right = insertNode(node->right, key);
+  else
+    return node;
+
+  // Update the balance factor of each node and
+  // Balance the tree
+  node->height = 1 + max(height(node->left),
+               height(node->right));
+
+  int balance = getBalance(node);
+  if (balance > 1 && key < node->left->key)
+    return rightRotate(node);
+
+  if (balance < -1 && key > node->right->key)
+    return leftRotate(node);
+
+  if (balance > 1 && key > node->left->key) {
+    node->left = leftRotate(node->left);
+    return rightRotate(node);
+  }
+
+  if (balance < -1 && key < node->right->key) {
+    node->right = rightRotate(node->right);
+    return leftRotate(node);
+  }
+
+  return node;
+}
+
+struct Node *minValueNode(struct Node *node) {
+  struct Node *current = node;
+
+  while (current->left != NULL)
+    current = current->left;
+
+  return current;
+}
+
+// Delete a nodes
+struct Node *deleteNode(struct Node *root, int key) {
+  // Find the node and delete it
+  if (root == NULL)
+    return root;
+
+  if (key < root->key)
+    root->left = deleteNode(root->left, key);
+
+  else if (key > root->key)
+    root->right = deleteNode(root->right, key);
+
+  else {
+    if ((root->left == NULL) || (root->right == NULL)) {
+      struct Node *temp = root->left ? root->left : root->right;
+
+      if (temp == NULL) {
+        temp = root;
+        root = NULL;
+      } else
+        *root = *temp;
+      free(temp);
+    } else {
+      struct Node *temp = minValueNode(root->right);
+
+      root->key = temp->key;
+
+      root->right = deleteNode(root->right, temp->key);
+    }
+  }
+
+  if (root == NULL)
+    return root;
+
+  // Update the balance factor of each node and
+  // balance the tree
+  root->height = 1 + max(height(root->left),
+               height(root->right));
+
+  int balance = getBalance(root);
+  if (balance > 1 && getBalance(root->left) >= 0)
+    return rightRotate(root);
+
+  if (balance > 1 && getBalance(root->left) < 0) {
+    root->left = leftRotate(root->left);
+    return rightRotate(root);
+  }
+
+  if (balance < -1 && getBalance(root->right) <= 0)
+    return leftRotate(root);
+
+  if (balance < -1 && getBalance(root->right) > 0) {
+    root->right = rightRotate(root->right);
+    return leftRotate(root);
+  }
+
+  return root;
+}
+
+// Print the tree
+void printPreOrder(struct Node *root) {
+  if (root != NULL) {
+    printf("%d ", root->key);
+    printPreOrder(root->left);
+    printPreOrder(root->right);
+  }
+}
+
+int main() {
+  struct Node *root = NULL;
+
+  root = insertNode(root, 2);
+  root = insertNode(root, 1);
+  root = insertNode(root, 7);
+  root = insertNode(root, 4);
+  root = insertNode(root, 5);
+  root = insertNode(root, 3);
+  root = insertNode(root, 8);
+
+  printPreOrder(root);
+
+  root = deleteNode(root, 3);
+
+  printf("\nAfter deletion: ");
+  printPreOrder(root);
+
+  return 0;
 }
