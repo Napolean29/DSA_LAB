@@ -1730,3 +1730,630 @@ int main() {
 
   return 0;
 }
+
+// binary tree implementation in C
+#include<stdlib.h>
+#include<stdio.h>
+
+struct bin_tree {
+int data;
+struct bin_tree * right, * left;
+};
+typedef struct bin_tree node;
+
+void insert(node ** tree, int val)
+{
+    node *temp = NULL;
+    if(!(*tree))
+    {
+        temp = (node *)malloc(sizeof(node));
+        temp->left = temp->right = NULL;
+        temp->data = val;
+        *tree = temp;
+        return;
+    }
+
+    if(val < (*tree)->data)
+    {
+        insert(&(*tree)->left, val);
+    }
+    else if(val > (*tree)->data)
+    {
+        insert(&(*tree)->right, val);
+    }
+
+}
+
+void print_preorder(node * tree)
+{
+    if (tree)
+    {
+        printf("%d\n",tree->data);
+        print_preorder(tree->left);
+        print_preorder(tree->right);
+    }
+
+}
+
+void print_inorder(node * tree)
+{
+    if (tree)
+    {
+        print_inorder(tree->left);
+        printf("%d\n",tree->data);
+        print_inorder(tree->right);
+    }
+}
+
+void print_postorder(node * tree)
+{
+    if (tree)
+    {
+        print_postorder(tree->left);
+        print_postorder(tree->right);
+        printf("%d\n",tree->data);
+    }
+}
+
+void deltree(node * tree)
+{
+    if (tree)
+    {
+        deltree(tree->left);
+        deltree(tree->right);
+        free(tree);
+    }
+}
+
+node* search(node ** tree, int val)
+{
+    if(!(*tree))
+    {
+        return NULL;
+    }
+
+    if(val < (*tree)->data)
+    {
+        search(&((*tree)->left), val);
+    }
+    else if(val > (*tree)->data)
+    {
+        search(&((*tree)->right), val);
+    }
+    else if(val == (*tree)->data)
+    {
+        return *tree;
+    }
+}
+
+void main()
+{
+    node *root;
+    node *tmp;
+    //int i;
+
+    root = NULL;
+    /* Inserting nodes into tree */
+    insert(&root, 9);
+    insert(&root, 4);
+    insert(&root, 15);
+    insert(&root, 6);
+    insert(&root, 12);
+    insert(&root, 17);
+    insert(&root, 2);
+
+    /* Printing nodes of tree */
+    printf("Pre Order Display\n");
+    print_preorder(root);
+
+    printf("In Order Display\n");
+    print_inorder(root);
+
+    printf("Post Order Display\n");
+    print_postorder(root);
+
+    /* Search node into tree */
+    tmp = search(&root, 4);
+    if (tmp)
+    {
+        printf("Searched node=%d\n", tmp->data);
+    }
+    else
+    {
+        printf("Data Not found in tree.\n");
+    }
+
+    /* Deleting all nodes of tree */
+    deltree(root);
+}
+// Program to print all combination of size r in an array of size n
+#include <stdio.h>
+#include <stdlib.h>
+void combinationUtil(int arr[], int n, int r, int count, int data[], int i);
+ 
+// Needed for qsort.  See http://w...content-available-to-author-only...s.com/reference/cstdlib/qsort/
+int compare (const void * a, const void * b)
+{
+    return ( *(int*)a - *(int*)b );
+}
+ 
+// The main function that prints all combinations of size r
+// in arr[] of size n. This function mainly uses combinationUtil()
+void printCombination(int arr[], int n, int r)
+{
+    // A temporary array to store all combination one by one
+    int data[r];
+
+    // Sort array to handle duplicates
+    qsort (arr, n, sizeof(int), compare);
+    
+    // Print all combination using temprary array 'data[]'
+    combinationUtil(arr, n, r, 0, data, 0);
+}
+ 
+/* arr[]  ---> Input Array
+   n      ---> Size of input array
+   r      ---> Size of a combination to be printed
+   index  ---> Current index in data[]
+   data[] ---> Temporary array to store current combination
+   i      ---> index of current element in arr[]     */
+void combinationUtil(int arr[], int n, int r, int index, int data[], int i)
+{
+    // Current cobination is ready, print it
+    if (index == r)
+    {
+        for (int j=0; j<r; j++)
+            printf("%d ",data[j]);
+        printf("\n");
+        return;
+    }
+ 
+    // When no more elements are there to be put
+    if (i >= n)
+        return;
+ 
+    // current is included, put next at next location
+    data[index] = arr[i];
+    combinationUtil(arr, n, r, index+1, data, i+1);
+    
+    // Remove duplicates
+    while (arr[i] == arr[i+1])
+        i++;
+ 
+    // current is excluded, replace it with next (Note that
+    // i+1 is passed, but index is not changed)
+    combinationUtil(arr, n, r, index, data, i+1);
+}
+ 
+// Driver program to test above functions
+int main()
+{
+    int arr[] = {1, 2, 1, 3, 1};
+    int r = 3;
+    int n = sizeof(arr)/sizeof(arr[0]);
+    printCombination(arr, n, r);
+    return 0;
+}
+
+// Create a binary search tree using C
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node {
+  int key;
+  struct node *left, *right;
+};
+
+// Create a node
+struct node *newNode(int item) {
+  struct node *temp = (struct node *)malloc(sizeof(struct node));
+  temp->key = item;
+  temp->left = temp->right = NULL;
+  return temp;
+}
+
+// Inorder Traversal
+void inorder(struct node *root) {
+  if (root != NULL) {
+    // Traverse left
+    inorder(root->left);
+
+    // Traverse root
+    printf("%d -> ", root->key);
+
+    // Traverse right
+    inorder(root->right);
+  }
+}
+
+// Insert a node
+struct node *insert(struct node *node, int key) {
+  // Return a new node if the tree is empty
+  if (node == NULL) return newNode(key);
+
+  // Traverse to the right place and insert the node
+  if (key < node->key)
+    node->left = insert(node->left, key);
+  else
+    node->right = insert(node->right, key);
+
+  return node;
+}
+
+// Find the inorder successor
+struct node *minValueNode(struct node *node) {
+  struct node *current = node;
+
+  // Find the leftmost leaf
+  while (current && current->left != NULL)
+    current = current->left;
+
+  return current;
+}
+
+// Deleting a node
+struct node *deleteNode(struct node *root, int key) {
+  // Return if the tree is empty
+  if (root == NULL) return root;
+
+  // Find the node to be deleted
+  if (key < root->key)
+    root->left = deleteNode(root->left, key);
+  else if (key > root->key)
+    root->right = deleteNode(root->right, key);
+
+  else {
+    // If the node is with only one child or no child
+    if (root->left == NULL) {
+      struct node *temp = root->right;
+      free(root);
+      return temp;
+    } else if (root->right == NULL) {
+      struct node *temp = root->left;
+      free(root);
+      return temp;
+    }
+
+    // If the node has two children
+    struct node *temp = minValueNode(root->right);
+
+    // Place the inorder successor in position of the node to be deleted
+    root->key = temp->key;
+
+    // Delete the inorder successor
+    root->right = deleteNode(root->right, temp->key);
+  }
+  return root;
+}
+
+// Driver code
+int main() {
+  struct node *root = NULL;
+  root = insert(root, 8);
+  root = insert(root, 3);
+  root = insert(root, 1);
+  root = insert(root, 6);
+  root = insert(root, 7);
+  root = insert(root, 10);
+  root = insert(root, 14);
+  root = insert(root, 4);
+
+  printf("Inorder traversal: ");
+  inorder(root);
+
+  printf("\nAfter deleting 10\n");
+  root = deleteNode(root, 10);
+  printf("Inorder traversal: ");
+  inorder(root);
+}
+// Program to search a node in binary search tree
+#include <stdio.h>  
+#include <stdbool.h>  
+#include <stdlib.h>  
+   
+//Represent a node of binary tree  
+struct node{  
+    int data;  
+    struct node *left;  
+    struct node *right;  
+};  
+   
+//Represent the root of binary tree  
+struct node *root = NULL;  
+   
+static bool flag = false;  
+   
+//createNode() will create a new node  
+struct node* createNode(int data){  
+    //Create a new node  
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));  
+    //Assign data to newNode, set left and right children to NULL  
+    newNode->data = data;  
+    newNode->left = NULL;  
+    newNode->right = NULL;  
+      
+    return newNode;  
+}  
+   
+//searchNode() will search for the particular node in the binary tree  
+void searchNode(struct node *temp, int value){  
+    //Check whether tree is empty  
+    if(root == NULL){  
+        printf("Tree is empty\n");  
+    }  
+    else{  
+        //If value is found in the given binary tree then, set the flag to true  
+        if(temp->data == value){  
+            flag = true;  
+             return;  
+        }  
+        //Search in left subtree  
+        if(flag == false && temp->left != NULL){  
+        searchNode(temp->left, value);  
+        }  
+        //Search in right subtree  
+        if(flag == false && temp->right != NULL){  
+        searchNode(temp->right, value);  
+        }  
+    }  
+}  
+   
+int main()  
+{  
+    //Add nodes to the binary tree  
+    root = createNode(1);  
+    root->left = createNode(2);  
+    root->right = createNode(3);  
+    root->left->left = createNode(4);  
+    root->right->left = createNode(5);  
+    root->right->right = createNode(6);  
+          
+    //Search for node 5 in the binary tree  
+    searchNode(root, 5);  
+      
+    if(flag)  
+        printf("Element is present in the binary tree");  
+    else  
+        printf("Element is not present in the binary tree");  
+    return 0;  
+}  
+/*
+ * Program  : Binary Search Tree insertion
+ * Language : C
+ */
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+    int key;
+    struct node *left;
+    struct node *right;
+};
+
+//this function will return the new node with the given value
+struct node *getNewNode(int val)
+{
+    struct node *newNode = malloc(sizeof(struct node));
+    newNode->key   = val;
+    newNode->left  = NULL;
+    newNode->right = NULL;
+
+    return newNode;
+}
+
+struct node *insert(struct node *root, int val)
+{
+    /*
+     * It will handle two cases,
+     * 1. if the tree is empty, return new node in root
+     * 2. if the tree traversal reaches NULL, it will return the new node
+     */
+    if(root == NULL)
+        return getNewNode(val);
+    /*
+     * if given val is greater than root->key,
+     * we should find the correct place in right subtree and insert the new node
+     */
+    if(root->key < val)
+        root->right = insert(root->right,val);
+    /*
+     * if given val is smallar than root->key,
+     * we should find the correct place in left subtree and insert the new node
+     */
+    else if(root->key > val)
+        root->left = insert(root->left,val);
+    /*
+     * It will handle two cases
+     * (Prevent the duplicate nodes in the tree)
+     * 1.if root->key == val it will straight away return the address of the root node
+     * 2.After the insertion, it will return the original unchanged root's address
+     */
+    return root;
+}
+
+/*
+ * it will print the tree in ascending order
+ * we will discuss about it in the upcoming tutorials
+ */
+void inorder(struct node *root)
+{
+    if(root == NULL)
+        return;
+    inorder(root->left);
+    printf("%d ",root->key);
+    inorder(root->right);
+}
+
+int main()
+{
+    struct node *root = NULL;
+    root = insert(root,100);
+    root = insert(root,50);
+    root = insert(root,150);
+    root = insert(root,50);
+
+    inorder(root);
+
+    return 0;
+}
+
+// C program to demonstrate
+// delete operation in binary
+// search tree
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+	int key;
+	struct node *left, *right;
+};
+
+// A utility function to create a new BST node
+struct node* newNode(int item)
+{
+	struct node* temp
+		= (struct node*)malloc(sizeof(struct node));
+	temp->key = item;
+	temp->left = temp->right = NULL;
+	return temp;
+}
+
+// A utility function to do inorder traversal of BST
+void inorder(struct node* root)
+{
+	if (root != NULL) {
+		inorder(root->left);
+		printf("%d ", root->key);
+		inorder(root->right);
+	}
+}
+
+/* A utility function to
+insert a new node with given key in
+* BST */
+struct node* insert(struct node* node, int key)
+{
+	/* If the tree is empty, return a new node */
+	if (node == NULL)
+		return newNode(key);
+
+	/* Otherwise, recur down the tree */
+	if (key < node->key)
+		node->left = insert(node->left, key);
+	else
+		node->right = insert(node->right, key);
+
+	/* return the (unchanged) node pointer */
+	return node;
+}
+
+/* Given a non-empty binary search
+tree, return the node
+with minimum key value found in
+that tree. Note that the
+entire tree does not need to be searched. */
+struct node* minValueNode(struct node* node)
+{
+	struct node* current = node;
+
+	/* loop down to find the leftmost leaf */
+	while (current && current->left != NULL)
+		current = current->left;
+
+	return current;
+}
+
+/* Given a binary search tree
+and a key, this function
+deletes the key and
+returns the new root */
+struct node* deleteNode(struct node* root, int key)
+{
+	// base case
+	if (root == NULL)
+		return root;
+
+	// If the key to be deleted
+	// is smaller than the root's
+	// key, then it lies in left subtree
+	if (key < root->key)
+		root->left = deleteNode(root->left, key);
+
+	// If the key to be deleted
+	// is greater than the root's
+	// key, then it lies in right subtree
+	else if (key > root->key)
+		root->right = deleteNode(root->right, key);
+
+	// if key is same as root's key,
+	// then This is the node
+	// to be deleted
+	else {
+		// node with only one child or no child
+		if (root->left == NULL) {
+			struct node* temp = root->right;
+			free(root);
+			return temp;
+		}
+		else if (root->right == NULL) {
+			struct node* temp = root->left;
+			free(root);
+			return temp;
+		}
+
+		// node with two children:
+		// Get the inorder successor
+		// (smallest in the right subtree)
+		struct node* temp = minValueNode(root->right);
+
+		// Copy the inorder
+		// successor's content to this node
+		root->key = temp->key;
+
+		// Delete the inorder successor
+		root->right = deleteNode(root->right, temp->key);
+	}
+	return root;
+}
+
+// Driver Code
+int main()
+{
+	/* Let us create following BST
+			50
+		/	 \
+		30	 70
+		/ \ / \
+	20 40 60 80 */
+	struct node* root = NULL;
+	root = insert(root, 50);
+	root = insert(root, 30);
+	root = insert(root, 20);
+	root = insert(root, 40);
+	root = insert(root, 70);
+	root = insert(root, 60);
+	root = insert(root, 80);
+
+	printf("Inorder traversal of the given tree \n");
+	inorder(root);
+
+	printf("\nDelete 20\n");
+	root = deleteNode(root, 20);
+	printf("Inorder traversal of the modified tree \n");
+	inorder(root);
+
+	printf("\nDelete 30\n");
+	root = deleteNode(root, 30);
+	printf("Inorder traversal of the modified tree \n");
+	inorder(root);
+
+	printf("\nDelete 50\n");
+	root = deleteNode(root, 50);
+	printf("Inorder traversal of the modified tree \n");
+	inorder(root);
+
+	return 0;
+}
+
